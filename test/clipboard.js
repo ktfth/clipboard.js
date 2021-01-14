@@ -75,11 +75,20 @@ describe('Clipboard', () => {
         });
     });
 
-    describe('#onClick', () => {
+    describe('#listen', () => {
+      it('should add an type event listener to the passed selector', () => {
+        let clipboard = new Clipboard('.btn', {
+          type: 'keypress',
+        });
+        assert.isObject(clipboard.listener);
+      });
+    });
+
+    describe('#on', () => {
         it('should create a new instance of ClipboardAction', () => {
             let clipboard = new Clipboard('.btn');
 
-            clipboard.onClick(global.event);
+            clipboard.on(global.event);
             assert.instanceOf(clipboard.clipboardAction, ClipboardAction);
         });
 
@@ -87,7 +96,7 @@ describe('Clipboard', () => {
             let clipboard = new Clipboard('.btn');
             let bubbledEvent = { target: global.span, currentTarget: global.button };
 
-            clipboard.onClick(bubbledEvent);
+            clipboard.on(bubbledEvent);
             assert.instanceOf(clipboard.clipboardAction, ClipboardAction);
         });
 
@@ -99,7 +108,7 @@ describe('Clipboard', () => {
                     }
                 });
 
-                clipboard.onClick(global.event);
+                clipboard.on(global.event);
             }
             catch(e) {
                 assert.equal(e.message, 'Invalid "target" value, use a valid Element');
@@ -123,7 +132,7 @@ describe('Clipboard', () => {
         it('should destroy an existing instance of ClipboardAction', () => {
             let clipboard = new Clipboard('.btn');
 
-            clipboard.onClick(global.event);
+            clipboard.on(global.event);
             clipboard.destroy();
 
             assert.equal(clipboard.clipboardAction, null);
