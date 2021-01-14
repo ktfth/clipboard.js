@@ -2,6 +2,20 @@ import ClipboardAction from './clipboard-action';
 import Emitter from 'tiny-emitter';
 import listen from 'good-listener';
 
+class Resolver {
+  constructor(options = {}) {
+    this.options = options;
+  }
+
+  action(defaultAction) {
+    return (typeof this.options.action === 'function') ? this.options.action : defaultAction;
+  }
+
+  target(defaultTarget) {
+    return (typeof this.options.target === 'function') ? this.options.target : defaultTarget;
+  }
+}
+
 /**
  * Base class which takes one or more elements, adds event listeners to them,
  * and instantiates a new `ClipboardAction` on each click.
@@ -24,8 +38,12 @@ class Clipboard extends Emitter {
      * @param {Object} options
      */
     resolveOptions(options = {}) {
-        this.action    = (typeof options.action    === 'function') ? options.action    : this.defaultAction;
-        this.target    = (typeof options.target    === 'function') ? options.target    : this.defaultTarget;
+        let resolver = new Resolver(options);
+
+        this.action = resolver.action(this.defaultAction);
+        this.target = resolver.target(this.defaultTarget);
+
+        // this.target    = (typeof options.target    === 'function') ? options.target    : this.defaultTarget;
         this.text      = (typeof options.text      === 'function') ? options.text      : this.defaultText;
         this.container = (typeof options.container === 'object')   ? options.container : document.body;
     }
