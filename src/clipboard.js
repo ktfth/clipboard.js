@@ -54,11 +54,16 @@ class Clipboard extends Emitter {
      * @param {String|HTMLElement|HTMLCollection|NodeList} trigger
      * @param {Object} options
      */
-    constructor(trigger, options) {
+    constructor(trigger, options = {}) {
         super();
 
         this.resolveOptions(options);
-        this.listenClick(trigger);
+        if (options.type === undefined) {
+          options.type = 'click';
+        } if (options.cb === undefined) {
+          options.cb = (e, final) => { final(); };
+        }
+        this.listen(trigger, options.type, options.cb);
     }
 
     /**
@@ -76,32 +81,38 @@ class Clipboard extends Emitter {
     }
 
     /**
-     * Adds a click event listener to the passed trigger.
+     * Adds a type event listener to the passed trigger
      * @param {String|HTMLElement|HTMLCollection|NodeList} trigger
+     * @param {String} type
+     * @param {Function} cb
      */
-    listenClick(trigger) {
-        this.listener = listen(trigger, 'click', (e) => this.onClick(e));
+    listen(trigger, type, cb = (e, final) => { final(); }) {
+      this.listener = listen(trigger, type, (e) => {
+        cb(e, () => {
+          this.on(e);
+        });
+      });
     }
 
     /**
-     * Defines a new `ClipboardAction` on each click event.
+     * Defines a new `ClipboardAction` on each type event
      * @param {Event} e
      */
-    onClick(e) {
-        const trigger = e.delegateTarget || e.currentTarget;
+    on(e) {
+      const trigger = e.delegateTarget || e.currentTarget;
 
-        if (this.clipboardAction) {
-            this.clipboardAction = null;
-        }
+      if (this.clipboardAction) {
+          this.clipboardAction = null;
+      }
 
-        this.clipboardAction = new ClipboardAction({
-            action    : this.action(trigger),
-            target    : this.target(trigger),
-            text      : this.text(trigger),
-            container : this.container,
-            trigger   : trigger,
-            emitter   : this
-        });
+      this.clipboardAction = new ClipboardAction({
+          action    : this.action(trigger),
+          target    : this.target(trigger),
+          text      : this.text(trigger),
+          container : this.container,
+          trigger   : trigger,
+          emitter   : this
+      });
     }
 
     /**
