@@ -2,7 +2,13 @@ import ClipboardAction from './clipboard-action';
 import Emitter from 'tiny-emitter';
 import listen from 'good-listener';
 
+/**
+ * Resolve options of the clipboard
+ */
 class Resolver {
+  /**
+   * @param {Object} options
+   */
   constructor(options = {}) {
     this.options = options;
   }
@@ -13,6 +19,14 @@ class Resolver {
 
   target(defaultTarget) {
     return (typeof this.options.target === 'function') ? this.options.target : defaultTarget;
+  }
+
+  text(defaultText) {
+    return (typeof this.options.text === 'function') ? this.options.text : defaultText;
+  }
+
+  container(element) {
+    return (typeof this.options.container === 'object') ? this.options.container : element;
   }
 }
 
@@ -42,10 +56,8 @@ class Clipboard extends Emitter {
 
         this.action = resolver.action(this.defaultAction);
         this.target = resolver.target(this.defaultTarget);
-
-        // this.target    = (typeof options.target    === 'function') ? options.target    : this.defaultTarget;
-        this.text      = (typeof options.text      === 'function') ? options.text      : this.defaultText;
-        this.container = (typeof options.container === 'object')   ? options.container : document.body;
+        this.text = resolver.text(this.defaultText);
+        this.container = resolver.container(document.body);
     }
 
     /**
