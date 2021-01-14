@@ -13,18 +13,33 @@ class Resolver {
     this.options = options;
   }
 
+  /**
+   * Verify options action
+   * @param {Function} defaultAction
+   */
   action(defaultAction) {
     return (typeof this.options.action === 'function') ? this.options.action : defaultAction;
   }
 
+  /**
+   * Verify options target
+   * @param {Function} defaultTarget
+   */
   target(defaultTarget) {
     return (typeof this.options.target === 'function') ? this.options.target : defaultTarget;
   }
 
+  /**
+   * Verify options text
+   * @param {Function} defaultText
+   */
   text(defaultText) {
     return (typeof this.options.text === 'function') ? this.options.text : defaultText;
   }
 
+  /**
+   * @param {Element} element
+   */
   container(element) {
     return (typeof this.options.container === 'object') ? this.options.container : element;
   }
