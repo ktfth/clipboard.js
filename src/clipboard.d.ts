@@ -2,13 +2,6 @@
 type Action = "cut" | "copy";
 type Response = "success" | "error";
 
-type Options = {
-	text?: string;
-	action?: Action;
-	target?: Element;
-	container?: Element;
-};
-
 /**
  * Base class which takes one or more elements, adds event listeners to them,
  * and instantiates a new `ClipboardAction` on each click.
