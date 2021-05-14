@@ -1,0 +1,22 @@
+// For configuration documentation see http://romefrontend.dev/#project-configuration
+name: "clipboard.js"
+lint: {
+	globals: [
+		"Package"
+		"Package"
+		"define"
+		"define"
+		"define"
+		"define"
+		"define"
+		"define"
+		"NodeListOf"
+]
+	ignore: [
+		"dist"
+		"test"
+		"node_modules"
+		"*.test-d.ts"
+]
+}
+root: true
