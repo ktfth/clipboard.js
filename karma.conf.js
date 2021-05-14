@@ -1,6 +1,6 @@
-var webpackConfig = require("./webpack.config.js");
+const webpackConfig = require("./webpack.config.js");
 
-module.exports = function(karma) {
+export default function karma(karma) {
 	karma.set({
 		plugins: [
 			"karma-webpack",
@@ -33,4 +33,4 @@ module.exports = function(karma) {
 
 		browsers: ["ChromeHeadless"],
 	});
-};
+}

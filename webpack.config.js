@@ -10,7 +10,7 @@ https://clipboardjs.com/
 
 Licensed MIT © Zeno Rocha`;
 
-module.exports = {
+export default {
 	entry: "./src/clipboard.js",
 	mode: "production",
 	target: ["web", "es5"],
@@ -36,7 +36,7 @@ module.exports = {
 					output: {
 						beautify: false,
 						comments: (node, {value, type}) =>
-							type == "comment2" && value.startsWith("!")
+							type === "comment2" && value.startsWith("!")
 						,
 					},
 				},

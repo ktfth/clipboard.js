@@ -19,7 +19,7 @@ class ClipboardJS {
    */
 	on(type: Response, handler: (e: ClipboardJS.Event) => void): this
 
-	on(type: string, handler: (...args: Array<any>) => void): this
+	on(type: string, handler: (...args: Array<string>) => void): this
 
 	/**
    * Clears all event bindings.
